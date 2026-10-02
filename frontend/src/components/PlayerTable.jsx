@@ -3,9 +3,9 @@ import { formatDate, formatValue } from "@/lib/format";
 
 export default function PlayerTable({ players, onSelect }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+    <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
       <table className="w-full min-w-[900px] text-right text-sm">
-        <thead className="border-b border-line bg-page text-xs text-body">
+        <thead className="border-b border-line bg-panel text-xs text-body">
           <tr>
             <th className="px-4 py-3 font-semibold">اللاعب</th>
             <th className="px-4 py-3 font-semibold">المركز</th>
@@ -23,7 +23,7 @@ export default function PlayerTable({ players, onSelect }) {
             <tr
               key={player.player_id}
               onClick={() => onSelect?.(player)}
-              className="cursor-pointer transition hover:bg-page"
+              className="cursor-pointer transition hover:bg-white/[0.03]"
             >
               <td className="px-4 py-3">
                 <div className="flex items-center gap-3">

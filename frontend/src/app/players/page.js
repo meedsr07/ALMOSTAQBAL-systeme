@@ -9,7 +9,7 @@ import PlayerFormModal from "@/components/PlayerFormModal";
 import PlayerDetailsPanel from "@/components/PlayerDetailsPanel";
 
 const fieldClass =
-  "w-full rounded-xl border border-field bg-white px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-crimson";
+  "w-full rounded-xl border border-field bg-panel px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-crimson";
 
 export default function PlayersPage() {
   const [players, setPlayers] = useState([]);
@@ -101,7 +101,7 @@ export default function PlayersPage() {
       </div>
 
       {/* filters */}
-      <section className="grid gap-3 rounded-2xl border border-line bg-white p-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-3 rounded-2xl border border-line bg-surface p-4 sm:grid-cols-2 lg:grid-cols-4">
         <input
           type="search"
           value={search}
@@ -168,7 +168,7 @@ export default function PlayersPage() {
       {loading ? (
         <p className="py-16 text-center text-sm text-muted">جاري تحميل اللاعبين...</p>
       ) : players.length === 0 ? (
-        <div className="rounded-2xl border border-line bg-white py-16 text-center">
+        <div className="rounded-2xl border border-line bg-surface py-16 text-center">
           <p className="text-sm text-body">لا يوجد لاعبون بعد.</p>
           <button
             onClick={() => setModalOpen(true)}
@@ -178,7 +178,7 @@ export default function PlayersPage() {
           </button>
         </div>
       ) : filteredPlayers.length === 0 ? (
-        <p className="rounded-2xl border border-line bg-white py-16 text-center text-sm text-muted">
+        <p className="rounded-2xl border border-line bg-surface py-16 text-center text-sm text-muted">
           لا يوجد لاعبون مطابقون للفلاتر.
         </p>
       ) : view === "cards" ? (

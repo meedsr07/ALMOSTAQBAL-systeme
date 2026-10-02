@@ -14,10 +14,10 @@ export default function Topbar({ onMenuClick }) {
   const title = titles[pathname] || "AL MOSTAQBAL";
 
   return (
-    <header className="sticky top-0 z-20 flex h-20 items-center gap-4 border-b border-line bg-white px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-20 flex h-20 items-center gap-4 border-b border-line bg-black/70 px-4 backdrop-blur sm:px-6 lg:px-8">
       {/* logo: first child, so it sits on the far right in RTL */}
       <Link href="/" className="flex items-center gap-3">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#0b0b0b] ring-1 ring-black/10">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl ring-1 ring-white/10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.jpg"
@@ -36,7 +36,7 @@ export default function Topbar({ onMenuClick }) {
       <button
         onClick={onMenuClick}
         aria-label="فتح القائمة"
-        className="rounded-lg border border-line p-2 text-body lg:hidden"
+        className="rounded-lg border border-line p-2 text-body transition hover:text-ink lg:hidden"
       >
         <span className="block h-0.5 w-5 bg-current" />
         <span className="mt-1 block h-0.5 w-5 bg-current" />
@@ -49,7 +49,7 @@ export default function Topbar({ onMenuClick }) {
 
       <Link
         href="/players/create"
-        className="rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-crimson/90"
+        className="rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-crimson/25 transition hover:bg-crimson/90"
       >
         + لاعب جديد
       </Link>

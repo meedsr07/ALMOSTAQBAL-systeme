@@ -4,41 +4,40 @@
   /* brand */
   --color-crimson: #e61a23;
 
-  /* light surfaces */
-  --color-page: #f8f9fa;
-  --color-panel: #f1f3f5;
-  --color-line: #e9ecef;
-  --color-field: #dee2e6;
+  /* dark surfaces */
+  --color-page: #050505;
+  --color-surface: #0b0b0c;
+  --color-panel: #141416;
+  --color-line: #1e1e21;
+  --color-field: #2a2a2e;
 
   /* text */
-  --color-ink: #212529;
-  --color-body: #495057;
-  --color-muted: #868e96;
+  --color-ink: #ffffff;
+  --color-body: #a1a1aa;
+  --color-muted: #6b6b73;
 }
 
 body {
   background-color: var(--color-page);
   color: var(--color-ink);
-  /* very soft crimson tint on a clean background */
-  background-image: radial-gradient(
-    900px circle at 88% -12%,
-    rgba(230, 26, 35, 0.05),
-    transparent 60%
-  );
+  /* subtle dark red glow */
+  background-image:
+    radial-gradient(900px circle at 85% -10%, rgba(230, 26, 35, 0.18), transparent 60%),
+    radial-gradient(700px circle at 10% 110%, rgba(230, 26, 35, 0.1), transparent 60%);
   background-attachment: fixed;
 }
 
-/* thin scrollbar that matches the light theme */
+/* thin scrollbar that matches the dark theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f3f5;
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ced4da;
+  background: #262626;
   border-radius: 9999px;
 }

@@ -13,7 +13,7 @@ export default function PlayerCard({ player, onClick }) {
           onClick?.();
         }
       }}
-      className="cursor-pointer rounded-2xl border border-line bg-white p-4 transition hover:border-crimson/40 hover:shadow-sm"
+      className="cursor-pointer rounded-2xl border border-line bg-surface p-4 transition hover:border-crimson/40 hover:shadow-sm"
     >
       <div className="flex items-start gap-4">
         <PlayerAvatar player={player} />
@@ -47,19 +47,19 @@ export default function PlayerCard({ player, onClick }) {
       </div>
 
       <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
-        <div className="rounded-xl bg-page px-3 py-2">
+        <div className="rounded-xl bg-panel px-3 py-2">
           <dt className="text-muted">الطول</dt>
           <dd className="font-bold text-ink">
             {player.height_cm ? `${player.height_cm} سم` : "—"}
           </dd>
         </div>
-        <div className="rounded-xl bg-page px-3 py-2">
+        <div className="rounded-xl bg-panel px-3 py-2">
           <dt className="text-muted">الوزن</dt>
           <dd className="font-bold text-ink">
             {player.weight_kg ? `${player.weight_kg} كجم` : "—"}
           </dd>
         </div>
-        <div className="col-span-2 rounded-xl bg-page px-3 py-2">
+        <div className="col-span-2 rounded-xl bg-panel px-3 py-2">
           <dt className="text-muted">الفريق السابق</dt>
           <dd className="truncate font-bold text-ink">
             {formatValue(player.previous_team)}

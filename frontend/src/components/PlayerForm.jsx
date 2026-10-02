@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createPlayer } from "@/lib/api";
 
 const fieldClass =
-  "w-full rounded-xl border border-field bg-white px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-crimson";
+  "w-full rounded-xl border border-field bg-panel px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-crimson";
 
 const labelClass = "mb-1.5 block text-sm font-semibold text-body";
 
@@ -196,7 +196,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
             type="file"
             accept="image/jpeg,image/png,image/webp"
             onChange={handleImageChange}
-            className="w-full cursor-pointer rounded-xl border border-field bg-white px-4 py-2.5 text-sm text-body file:ml-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-crimson file:px-4 file:py-2 file:text-xs file:font-bold file:text-white"
+            className="w-full cursor-pointer rounded-xl border border-field bg-panel px-4 py-2.5 text-sm text-body file:ml-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-crimson file:px-4 file:py-2 file:text-xs file:font-bold file:text-white"
           />
 
           {imagePreview && (
@@ -217,7 +217,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
       )}
 
       {saved && (
-        <p className="rounded-xl border border-line bg-page px-4 py-3 text-sm font-semibold text-crimson">
+        <p className="rounded-xl border border-line bg-surface px-4 py-3 text-sm font-semibold text-crimson">
           تم حفظ اللاعب بنجاح
         </p>
       )}
@@ -234,7 +234,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
         <button
           type="button"
           onClick={() => onCancel?.()}
-          className="rounded-xl bg-[#343a40] px-6 py-2.5 text-sm font-bold text-white transition hover:bg-[#212529]"
+          className="rounded-xl bg-white/10 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
         >
           إلغاء
         </button>

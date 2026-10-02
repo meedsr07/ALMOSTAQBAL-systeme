@@ -16,8 +16,8 @@ export default function PlayerFormModal({ onClose, onCreated }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#212529]/45 p-4 py-10 sm:p-6">
-      <div className="w-full max-w-3xl rounded-2xl bg-white shadow-2xl shadow-[#212529]/20">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 py-10 sm:p-6">
+      <div className="w-full max-w-3xl rounded-2xl bg-surface shadow-2xl shadow-black/60 ring-1 ring-line">
         <div className="flex items-center justify-between border-b border-line px-6 py-5">
           <div>
             <h2 className="text-lg font-bold text-ink">تسجيل لاعب جديد</h2>
@@ -29,7 +29,7 @@ export default function PlayerFormModal({ onClose, onCreated }) {
           <button
             onClick={onClose}
             aria-label="إغلاق"
-            className="rounded-lg border border-line px-3 py-1.5 text-sm font-bold text-body transition hover:bg-page hover:text-ink"
+            className="rounded-lg border border-line px-3 py-1.5 text-sm font-bold text-body transition hover:bg-white/[0.03] hover:text-ink"
           >
             ✕
           </button>

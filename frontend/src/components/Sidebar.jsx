@@ -14,12 +14,12 @@ export default function Sidebar({ open, onClose }) {
 
   return (
     <aside
-      className={`fixed top-0 right-0 z-40 h-full w-64 border-l border-line bg-panel transition-transform lg:translate-x-0 ${
+      className={`fixed top-0 right-0 z-40 h-full w-64 border-l border-line bg-surface transition-transform lg:translate-x-0 ${
         open ? "translate-x-0" : "translate-x-full"
       }`}
     >
-      <div className="flex h-16 items-center gap-3 border-b border-line px-5">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-crimson text-lg font-extrabold text-white">
+      <div className="flex h-20 items-center gap-3 border-b border-line px-5">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-crimson text-lg font-extrabold text-white shadow-lg shadow-crimson/30">
           A
         </div>
         <div>
@@ -40,8 +40,8 @@ export default function Sidebar({ open, onClose }) {
               onClick={onClose}
               className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
                 active
-                  ? "bg-white text-crimson ring-1 ring-crimson/30"
-                  : "text-body hover:bg-white hover:text-ink"
+                  ? "bg-crimson/15 text-crimson ring-1 ring-crimson/40"
+                  : "text-body hover:bg-white/5 hover:text-ink"
               }`}
             >
               {link.label}

@@ -43,10 +43,10 @@ export default function PlayerDetailsPanel({ player, onClose }) {
       <button
         aria-label="إغلاق التفاصيل"
         onClick={onClose}
-        className="absolute inset-0 h-full w-full cursor-default bg-[#212529]/45"
+        className="absolute inset-0 h-full w-full cursor-default bg-black/70"
       />
 
-      <aside className="absolute top-0 bottom-0 left-0 flex w-full max-w-sm flex-col overflow-y-auto bg-white shadow-2xl shadow-[#212529]/20">
+      <aside className="absolute top-0 bottom-0 left-0 flex w-full max-w-sm flex-col overflow-y-auto bg-surface shadow-2xl shadow-black/60 ring-1 ring-line">
         <div className="flex items-start gap-4 border-b border-line p-5">
           <PlayerAvatar player={player} className="h-20 w-20 text-xl" />
 
@@ -73,7 +73,7 @@ export default function PlayerDetailsPanel({ player, onClose }) {
           <button
             onClick={onClose}
             aria-label="إغلاق"
-            className="rounded-lg border border-line px-3 py-1.5 text-sm font-bold text-body transition hover:bg-page hover:text-ink"
+            className="rounded-lg border border-line px-3 py-1.5 text-sm font-bold text-body transition hover:bg-white/[0.03] hover:text-ink"
           >
             ✕
           </button>
@@ -91,7 +91,7 @@ export default function PlayerDetailsPanel({ player, onClose }) {
         <div className="mt-auto border-t border-line p-5">
           <button
             onClick={onClose}
-            className="w-full rounded-xl bg-[#343a40] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#212529]"
+            className="w-full rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
           >
             إغلاق
           </button>

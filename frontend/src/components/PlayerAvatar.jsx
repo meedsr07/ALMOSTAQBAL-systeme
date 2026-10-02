@@ -25,7 +25,7 @@ export default function PlayerAvatar({ player, className = "h-16 w-16" }) {
       src={imageUrl}
       alt={`صورة ${player.first_name} ${player.last_name}`}
       onError={() => setBroken(true)}
-      className={`${className} shrink-0 rounded-2xl bg-white object-cover ring-1 ring-line`}
+      className={`${className} shrink-0 rounded-2xl bg-panel object-cover ring-1 ring-line`}
     />
   );
 }
