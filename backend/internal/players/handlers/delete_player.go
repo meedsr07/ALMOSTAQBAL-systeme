@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"Most/internal/players/repositories"
+	"Most/internal/players/services"
 	"Most/internal/response"
 )
 
@@ -32,8 +32,8 @@ func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	profileImage, err := repositories.DeletePlayer(playerID)
-	if errors.Is(err, repositories.ErrPlayerNotFound) {
+	profileImage, err := services.DeletePlayer(playerID)
+	if errors.Is(err, services.ErrPlayerNotFound) {
 		response.JSON(w, http.StatusNotFound, response.ErrorBody{Error: "player not found"})
 		return
 	}

@@ -58,6 +58,10 @@ export default function PlayerCard({ player, onClick }) {
             {formatValue(player.previous_team)}
           </dd>
         </div>
+        <div className="detail-box"><dt>رقم الهاتف</dt><dd dir="ltr">
+            {formatValue(player.phone)}
+          </dd>
+        </div>
       </dl>
     </article>
   );

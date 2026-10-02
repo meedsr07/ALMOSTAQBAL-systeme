@@ -3,6 +3,7 @@ package handlers
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -11,10 +12,9 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
 
 	"Most/internal/players/models"
-	"Most/internal/players/repositories"
+	"Most/internal/players/services"
 	"Most/internal/response"
 )
 
@@ -27,11 +27,6 @@ const (
 	maxImageSize = 5 << 20
 	// maxRequestSize is a bit bigger than maxImageSize to leave room for the text fields.
 	maxRequestSize = maxImageSize + (1 << 20)
-
-	minHeightCM = 50
-	maxHeightCM = 250
-	minWeightKG = 5
-	maxWeightKG = 200
 )
 
 // allowedImageTypes links the image content type to the extension we save the file with.
@@ -39,14 +34,6 @@ var allowedImageTypes = map[string]string{
 	"image/jpeg": ".jpg",
 	"image/png":  ".png",
 	"image/webp": ".webp",
-}
-
-// dateLayouts are the date_of_birth formats accepted from the frontend.
-var dateLayouts = []string{
-	"2006-01-02",
-	time.RFC3339,
-	"2006-01-02T15:04:05",
-	"2006-01-02 15:04:05",
 }
 
 // createPlayerResponse is the body returned with HTTP 201.
@@ -83,9 +70,9 @@ func Creat_player_Info(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dateOfBirth, err := parseDate(rawDateOfBirth)
+	dateOfBirth, err := services.ParseDateOfBirth(rawDateOfBirth)
 	if err != nil {
-		response.BadRequest(w, "date_of_birth is invalid, use the format YYYY-MM-DD")
+		writeServiceError(w, err)
 		return
 	}
 
@@ -93,8 +80,8 @@ func Creat_player_Info(w http.ResponseWriter, r *http.Request) {
 	heightCM := 0
 	if rawHeight := strings.TrimSpace(r.FormValue("height_cm")); rawHeight != "" {
 		heightCM, err = strconv.Atoi(rawHeight)
-		if err != nil || heightCM < minHeightCM || heightCM > maxHeightCM {
-			response.BadRequest(w, fmt.Sprintf("height_cm must be a number between %d and %d", minHeightCM, maxHeightCM))
+		if err != nil {
+			response.BadRequest(w, fmt.Sprintf("height_cm must be a number between %d and %d", services.MinHeightCM, services.MaxHeightCM))
 			return
 		}
 	}
@@ -102,8 +89,8 @@ func Creat_player_Info(w http.ResponseWriter, r *http.Request) {
 	weightKG := 0.0
 	if rawWeight := strings.TrimSpace(r.FormValue("weight_kg")); rawWeight != "" {
 		weightKG, err = strconv.ParseFloat(rawWeight, 64)
-		if err != nil || weightKG < minWeightKG || weightKG > maxWeightKG {
-			response.BadRequest(w, fmt.Sprintf("weight_kg must be a number between %d and %d", minWeightKG, maxWeightKG))
+		if err != nil {
+			response.BadRequest(w, fmt.Sprintf("weight_kg must be a number between %d and %d", services.MinWeightKG, services.MaxWeightKG))
 			return
 		}
 	}
@@ -141,6 +128,7 @@ func Creat_player_Info(w http.ResponseWriter, r *http.Request) {
 	player := models.Player{
 		FirstName:     firstName,
 		LastName:      lastName,
+		Phone:         strings.TrimSpace(r.FormValue("phone")),
 		DateOfBirth:   dateOfBirth,
 		Position:      strings.TrimSpace(r.FormValue("position")),
 		Category:      strings.TrimSpace(r.FormValue("category")),
@@ -151,28 +139,22 @@ func Creat_player_Info(w http.ResponseWriter, r *http.Request) {
 		ProfileImage:  uploadsURL + "/" + fileName,
 	}
 
-	playerID, err := repositories.CreatePlayer(player)
+	player, err = services.CreatePlayer(player)
 	if err != nil {
+		// the file is already on disk, remove it so we keep no orphan image.
 		os.Remove(filepath.Join(uploadsDir, fileName))
+		if errors.Is(err, services.ErrInvalidInput) {
+			writeServiceError(w, err)
+			return
+		}
 		response.InternalServerError(w, "can't save the player")
 		return
 	}
-	player.PlayerID = int(playerID)
 
 	response.JSON(w, http.StatusCreated, createPlayerResponse{
 		Message: "Player created successfully",
 		Player:  player,
 	})
-}
-
-// parseDate converts the received date_of_birth into a time.Time.
-func parseDate(value string) (time.Time, error) {
-	for _, layout := range dateLayouts {
-		if parsed, err := time.Parse(layout, value); err == nil {
-			return parsed, nil
-		}
-	}
-	return time.Time{}, fmt.Errorf("unsupported date format: %s", value)
 }
 
 // imageExtension checks the real content of the uploaded file and returns the

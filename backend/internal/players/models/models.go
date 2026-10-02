@@ -6,6 +6,7 @@ type Player struct {
     PlayerID      int       `json:"player_id"`
     FirstName     string    `json:"first_name"`
     LastName      string    `json:"last_name"`
+    Phone         string    `json:"phone"`
     DateOfBirth   time.Time `json:"date_of_birth"`
     Position      string    `json:"position"`
     Category      string    `json:"category"`

@@ -11,6 +11,8 @@ func NewRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/players", handlers.GetPlayersHandler)
 	mux.HandleFunc("POST /api/players", handlers.Creat_player_Info)
+	mux.HandleFunc("GET /api/players/{playerID}", handlers.GetPlayerInfoHandler)
+	mux.HandleFunc("PUT /api/players/{playerID}", handlers.UpdatePlayerHandler)
 	mux.HandleFunc("DELETE /api/players/{playerID}", handlers.DeletePlayerHandler)
 	mux.HandleFunc("GET /api/players/{playerID}/subscriptions", subscriptionHandlers.GetPlayerSubscriptionsHandler)
 

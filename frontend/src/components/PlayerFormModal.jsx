@@ -3,14 +3,17 @@
 import PlayerForm from "./PlayerForm";
 
 // White modal that holds the player registration form.
-// onCreated: called with the new player after a successful save.
-export default function PlayerFormModal({ onClose, onCreated }) {
-  function handleSuccess(player) {
-    if (!player) return;
+// Pass a player to open it in edit mode (the fields come pre-filled).
+// onSaved: called with the created or updated player after a successful save.
+export default function PlayerFormModal({ player, onClose, onSaved }) {
+  const isEditing = Boolean(player);
+
+  function handleSuccess(saved) {
+    if (!saved) return;
 
     // let the success message show for a moment, then close the modal
     setTimeout(() => {
-      onCreated?.(player);
+      onSaved?.(saved, isEditing);
       onClose();
     }, 1200);
   }
@@ -19,8 +22,8 @@ export default function PlayerFormModal({ onClose, onCreated }) {
     <div className="modal-backdrop"><div className="modal">
         <div className="modal-header">
           <div>
-            <h2>تسجيل لاعب جديد</h2><p className="muted">
-              املأ البيانات وأضف صورة اللاعب
+            <h2>{isEditing ? "تعديل بيانات اللاعب" : "تسجيل لاعب جديد"}</h2><p className="muted">
+              {isEditing ? "عدّل البيانات واحفظ التغييرات" : "املأ البيانات وأضف صورة اللاعب"}
             </p>
           </div>
 
@@ -34,7 +37,11 @@ export default function PlayerFormModal({ onClose, onCreated }) {
         </div>
 
         <div className="modal-body">
-          <PlayerForm onSuccess={handleSuccess} onCancel={onClose} />
+          <PlayerForm
+            player={player}
+            onSuccess={handleSuccess}
+            onCancel={onClose}
+          />
         </div>
       </div>
     </div>

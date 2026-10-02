@@ -34,6 +34,35 @@ export async function createPlayer(formData) {
   return data;
 }
 
+// GET /api/players/{playerID} -> returns one player
+export async function getPlayer(playerID) {
+  const response = await fetch(`/api/players/${playerID}`, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new Error("تعذر تحميل بيانات اللاعب");
+  }
+
+  return response.json();
+}
+
+// PUT /api/players/{playerID} -> updates the sent fields of one player.
+// data is JSON, only the keys it holds are saved.
+export async function updatePlayer(playerID, data) {
+  const response = await fetch(`/api/players/${playerID}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(result.error || "تعذر تحديث بيانات اللاعب");
+  }
+
+  return result;
+}
+
 // DELETE /api/players/{playerID} -> deletes one player and its image
 export async function deletePlayer(playerID) {
   const response = await fetch(`/api/players/${playerID}`, { method: "DELETE" });

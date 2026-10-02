@@ -8,7 +8,8 @@ import PlayerPaymentHistory from "./PlayerPaymentHistory";
 
 // Sliding side panel with all the data of one player.
 // Slides in from the left, which is the mirrored side in a RTL layout.
-export default function PlayerDetailsPanel({ player, onClose, onDeleted }) {
+// onEdit: called with the player when the edit button is pressed.
+export default function PlayerDetailsPanel({ player, onClose, onDeleted, onEdit }) {
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
@@ -42,6 +43,7 @@ export default function PlayerDetailsPanel({ player, onClose, onDeleted }) {
     { label: "رقم اللاعب", value: player.player_id },
     { label: "الاسم الأول", value: formatValue(player.first_name) },
     { label: "اسم العائلة", value: formatValue(player.last_name) },
+    { label: "رقم الهاتف", value: formatValue(player.phone), ltr: true },
     { label: "تاريخ الميلاد", value: formatDate(player.date_of_birth) },
     { label: "المركز", value: formatValue(player.position) },
     { label: "الفئة", value: formatValue(player.category) },
@@ -90,7 +92,9 @@ export default function PlayerDetailsPanel({ player, onClose, onDeleted }) {
 
         <dl className="details-list">
           {rows.map((row) => (
-            <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd>
+            <div key={row.label}><dt>{row.label}</dt><dd dir={row.ltr ? "ltr" : undefined}>
+                {row.value}
+              </dd>
             </div>
           ))}
         </dl>
@@ -128,6 +132,13 @@ export default function PlayerDetailsPanel({ player, onClose, onDeleted }) {
             </>
           ) : (
             <div className="button-group">
+              <button
+                onClick={() => onEdit?.(player)}
+                className="button button-secondary"
+              >
+                تعديل
+              </button>
+
               <button
                 onClick={() => setConfirming(true)}
                 className="button button-danger"

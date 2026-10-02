@@ -5,7 +5,7 @@ export default function PlayerTable({ players, onSelect }) {
   return (
     <div className="table-panel"><table className="data-table"><thead>
           <tr>
-            <th>اللاعب</th><th>المركز</th><th>الفئة</th><th>الطول</th><th>الوزن</th><th>القدم المفضلة</th><th>الفريق السابق</th><th>تاريخ الميلاد</th>
+            <th>اللاعب</th><th>المركز</th><th>الفئة</th><th>الطول</th><th>الوزن</th><th>القدم المفضلة</th><th>الفريق السابق</th><th>رقم الهاتف</th><th>تاريخ الميلاد</th>
           </tr>
         </thead>
 
@@ -30,7 +30,9 @@ export default function PlayerTable({ players, onSelect }) {
               <td>
                 {player.weight_kg ? `${player.weight_kg} كجم` : "—"}
               </td>
-              <td>{formatValue(player.preferred_foot)}</td><td>{formatValue(player.previous_team)}</td><td>{formatDate(player.date_of_birth)}</td>
+              <td>{formatValue(player.preferred_foot)}</td><td>{formatValue(player.previous_team)}</td><td dir="ltr">
+                {formatValue(player.phone)}
+              </td><td>{formatDate(player.date_of_birth)}</td>
             </tr>
           ))}
         </tbody>

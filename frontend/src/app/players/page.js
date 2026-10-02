@@ -19,6 +19,9 @@ export default function PlayersPage() {
   // the player whose details panel is open
   const [selectedPlayer, setSelectedPlayer] = useState(null);
 
+  // the player being edited in the modal, null when the modal is closed
+  const [editingPlayer, setEditingPlayer] = useState(null);
+
   // filters
   const [search, setSearch] = useState("");
   const [position, setPosition] = useState("");
@@ -58,6 +61,20 @@ export default function PlayersPage() {
     setPosition("");
     setCategory("");
     setFoot("");
+  }
+
+  // Called by the form modal for both a creation and an edit.
+  function handlePlayerSaved(player, isEditing) {
+    setPlayers((old) =>
+      isEditing
+        ? old.map((item) =>
+            item.player_id === player.player_id ? player : item,
+          )
+        : [...old, player],
+    );
+
+    // keep the open details panel showing the new values
+    if (isEditing) setSelectedPlayer(player);
   }
 
   return (
@@ -190,13 +207,22 @@ export default function PlayersPage() {
           onDeleted={(player) =>
             setPlayers((old) => old.filter((item) => item.player_id !== player.player_id))
           }
+          onEdit={(player) => setEditingPlayer(player)}
+        />
+      )}
+
+      {editingPlayer && (
+        <PlayerFormModal
+          player={editingPlayer}
+          onClose={() => setEditingPlayer(null)}
+          onSaved={handlePlayerSaved}
         />
       )}
 
       {modalOpen && (
         <PlayerFormModal
           onClose={() => setModalOpen(false)}
-          onCreated={(player) => setPlayers((old) => [...old, player])}
+          onSaved={handlePlayerSaved}
         />
       )}
     </div>

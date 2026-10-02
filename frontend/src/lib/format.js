@@ -15,6 +15,13 @@ export function formatValue(value) {
   return value === null || value === undefined || value === "" ? "—" : value;
 }
 
+// Turns a date coming from the API (2012-05-14T00:00:00Z) into the
+// YYYY-MM-DD value an <input type="date"> expects
+export function formatDateInput(value) {
+  if (!value) return "";
+  return String(value).slice(0, 10);
+}
+
 export function formatMoney(value) {
   return `${Number(value || 0).toLocaleString("ar-EG-u-nu-latn")} DH`;
 }
