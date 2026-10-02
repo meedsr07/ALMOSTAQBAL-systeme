@@ -7,6 +7,7 @@ const titles = {
   "/": "لوحة التحكم",
   "/players": "اللاعبون",
   "/players/create": "إضافة لاعب جديد",
+  "/subscriptions": "الاشتراكات",
 };
 
 export default function Topbar({ onMenuClick }) {
@@ -14,42 +15,38 @@ export default function Topbar({ onMenuClick }) {
   const title = titles[pathname] || "AL MOSTAQBAL";
 
   return (
-    <header className="sticky top-0 z-20 flex h-20 items-center gap-4 border-b border-line bg-black/70 px-4 backdrop-blur sm:px-6 lg:px-8">
+    <header className="topbar">
       {/* logo: first child, so it sits on the far right in RTL */}
-      <Link href="/" className="flex items-center gap-3">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl ring-1 ring-white/10">
+      <Link href="/" className="topbar-brand">
+        <span>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.jpg"
             alt="شعار AL MOSTAQBAL"
-            className="h-full w-full object-cover"
+            className="brand-logo"
           />
         </span>
-        <span className="hidden sm:block">
-          <span className="block text-sm font-extrabold tracking-wide text-ink">
+        <span><span className="brand-title">
             AL MOSTAQBAL
           </span>
-          <span className="block text-xs text-muted">نظام إدارة اللاعبين</span>
+          <span className="brand-subtitle">نظام إدارة اللاعبين</span>
         </span>
       </Link>
 
       <button
         onClick={onMenuClick}
         aria-label="فتح القائمة"
-        className="rounded-lg border border-line p-2 text-body transition hover:text-ink lg:hidden"
+        className="menu-button"
       >
-        <span className="block h-0.5 w-5 bg-current" />
-        <span className="mt-1 block h-0.5 w-5 bg-current" />
-        <span className="mt-1 block h-0.5 w-5 bg-current" />
+        ☰
       </button>
 
-      <div className="flex-1">
-        <h1 className="text-lg font-bold text-ink sm:text-xl">{title}</h1>
+      <div className="topbar-title"><h1>{title}</h1>
       </div>
 
       <Link
         href="/players/create"
-        className="rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-crimson/25 transition hover:bg-crimson/90"
+        className="button button-primary"
       >
         + لاعب جديد
       </Link>

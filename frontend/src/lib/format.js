@@ -14,3 +14,13 @@ export function formatDate(value) {
 export function formatValue(value) {
   return value === null || value === undefined || value === "" ? "—" : value;
 }
+
+export function formatMoney(value) {
+  return `${Number(value || 0).toLocaleString("ar-EG-u-nu-latn")} DH`;
+}
+
+export function formatMonth(month) {
+  return new Intl.DateTimeFormat("ar-EG-u-nu-latn", { month: "long" }).format(
+    new Date(2026, Number(month) - 1, 1),
+  );
+}

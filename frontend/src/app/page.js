@@ -25,31 +25,37 @@ export default function DashboardPage() {
   }, []);
 
   const recentPlayers = [...players].reverse().slice(0, 6);
+  const playersWithHeight = players.filter((player) => Number(player.height_cm) > 0);
+  const playersWithWeight = players.filter((player) => Number(player.weight_kg) > 0);
+  const averageHeight = playersWithHeight.length
+    ? Math.round(playersWithHeight.reduce((sum, player) => sum + Number(player.height_cm), 0) / playersWithHeight.length)
+    : 0;
+  const averageWeight = playersWithWeight.length
+    ? (playersWithWeight.reduce((sum, player) => sum + Number(player.weight_kg), 0) / playersWithWeight.length).toFixed(1)
+    : 0;
 
   return (
-    <div className="space-y-6">
-      <section className="overflow-hidden rounded-2xl border border-line bg-surface">
-        <div className="border-b border-line p-6">
-          <h2 className="text-xl font-extrabold text-ink sm:text-2xl">
+    <div className="dashboard-page"><section className="panel hero"><div>
+          <h2>
             مرحبا بك في نظام{" "}
-            <span className="text-crimson">AL MOSTAQBAL</span>
+            <span className="brand-text">AL MOSTAQBAL</span>
           </h2>
-          <p className="mt-2 max-w-2xl text-sm text-body">
+          <p>
             أضف لاعبيك، تابع بياناتهم، واسترجعهم في أي وقت من مكان واحد.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 p-6 pt-0">
+        <div className="actions">
           <button
             onClick={() => setModalOpen(true)}
-            className="rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-crimson/25 transition hover:bg-crimson/90"
+            className="button button-primary"
           >
             + إضافة لاعب
           </button>
 
           <Link
             href="/players"
-            className="rounded-xl border border-line px-5 py-2.5 text-sm font-bold text-body transition hover:border-white/20 hover:text-ink"
+            className="button button-secondary"
           >
             عرض كل اللاعبين
           </Link>
@@ -57,44 +63,45 @@ export default function DashboardPage() {
       </section>
 
       {error && (
-        <p className="rounded-xl border border-crimson/40 bg-crimson/10 px-4 py-3 text-sm text-crimson">
+        <p className="error-message">
           {error}
         </p>
       )}
 
-      <section className="rounded-2xl border border-line bg-surface p-5">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-base font-bold text-ink">أحدث اللاعبين</h3>
-          <Link href="/players" className="text-xs font-semibold text-crimson hover:underline">
+      <section className="stats-grid">
+        <article className="stat-card"><p className="stat-label">إجمالي اللاعبين</p><p className="stat-value accent">{players.length}</p></article>
+        <article className="stat-card"><p className="stat-label">متوسط الطول</p><p className="stat-value">{averageHeight} سم</p></article>
+        <article className="stat-card"><p className="stat-label">متوسط الوزن</p><p className="stat-value">{averageWeight} كجم</p></article>
+      </section>
+
+      <section className="panel"><div className="section-header"><h3>أحدث اللاعبين</h3><Link href="/players" className="button-link">
             عرض الكل
           </Link>
         </div>
 
         {loading ? (
-          <p className="py-6 text-center text-sm text-muted">جاري التحميل...</p>
+          <p className="loading-state">جاري التحميل...</p>
         ) : recentPlayers.length === 0 ? (
-          <p className="py-6 text-center text-sm text-muted">
+          <p className="empty-state">
             لا يوجد لاعبون بعد. ابدأ بإضافة أول لاعب.
           </p>
         ) : (
-          <ul className="divide-y divide-line">
+          <ul className="payment-list">
             {recentPlayers.map((player) => (
               <li key={player.player_id}>
                 <button
                   onClick={() => setSelectedPlayer(player)}
-                  className="flex w-full cursor-pointer items-center gap-3 py-3 text-right transition hover:bg-white/[0.03]"
+                  className="row-player"
                 >
-                  <PlayerAvatar player={player} className="h-11 w-11 text-sm" />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-ink">
+                  <PlayerAvatar player={player} /><div><p className="player-name">
                       {player.first_name} {player.last_name}
                     </p>
-                    <p className="text-xs text-muted">
+                    <p className="muted">
                       {player.position || "بدون مركز"} •{" "}
                       {player.category || "بدون فئة"}
                     </p>
                   </div>
-                  <span className="shrink-0 text-xs text-muted">
+                  <span className="muted">
                     {formatDate(player.date_of_birth)}
                   </span>
                 </button>

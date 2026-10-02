@@ -9,19 +9,19 @@ export default function AppShell({ children }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <div className="app-shell">
       <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
 
-      <div className="lg:pr-64">
+      <div className="app-content">
         <Topbar onMenuClick={() => setMenuOpen(true)} />
-        <main className="px-4 pb-16 pt-6 sm:px-6 lg:px-8">{children}</main>
+        <main className="main-content">{children}</main>
       </div>
 
       {menuOpen && (
         <button
           aria-label="إغلاق القائمة"
           onClick={() => setMenuOpen(false)}
-          className="fixed inset-0 z-30 bg-black/70 lg:hidden"
+          className="sidebar-overlay"
         />
       )}
     </div>

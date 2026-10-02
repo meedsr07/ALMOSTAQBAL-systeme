@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PlayerAvatar from "./PlayerAvatar";
 import { deletePlayer } from "@/lib/api";
 import { formatDate, formatValue } from "@/lib/format";
+import PlayerPaymentHistory from "./PlayerPaymentHistory";
 
 // Sliding side panel with all the data of one player.
 // Slides in from the left, which is the mirrored side in a RTL layout.
@@ -58,31 +59,20 @@ export default function PlayerDetailsPanel({ player, onClose, onDeleted }) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50">
-      <button
-        aria-label="إغلاق التفاصيل"
-        onClick={onClose}
-        className="absolute inset-0 h-full w-full cursor-default bg-black/70"
-      />
-
-      <aside className="absolute top-0 bottom-0 left-0 flex w-full max-w-sm flex-col overflow-y-auto bg-surface shadow-2xl shadow-black/60 ring-1 ring-line">
-        <div className="flex items-start gap-4 border-b border-line p-5">
-          <PlayerAvatar player={player} className="h-20 w-20 text-xl" />
-
-          <div className="min-w-0 flex-1">
-            <h2 className="text-lg font-extrabold text-ink">
+    <div className="modal-backdrop"><button aria-label="إغلاق التفاصيل" onClick={onClose} className="sidebar-overlay" />
+      <aside className="drawer"><div className="drawer-header">
+          <PlayerAvatar player={player} className="avatar-lg" />
+          <div><h2>
               {player.first_name} {player.last_name}
             </h2>
-            <p className="mt-1 text-xs text-muted">تفاصيل اللاعب</p>
-
-            <div className="mt-2 flex flex-wrap gap-1.5">
+            <p className="muted">تفاصيل اللاعب</p><div className="card-tags">
               {player.position && (
-                <span className="rounded-lg bg-crimson/10 px-2 py-0.5 text-xs font-semibold text-crimson">
+                <span className="tag brand">
                   {player.position}
                 </span>
               )}
               {player.category && (
-                <span className="rounded-lg bg-panel px-2 py-0.5 text-xs font-semibold text-body">
+                <span className="tag">
                   {player.category}
                 </span>
               )}
@@ -92,61 +82,61 @@ export default function PlayerDetailsPanel({ player, onClose, onDeleted }) {
           <button
             onClick={onClose}
             aria-label="إغلاق"
-            className="rounded-lg border border-line px-3 py-1.5 text-sm font-bold text-body transition hover:bg-white/[0.03] hover:text-ink"
+            className="close-button drawer-close"
           >
             ✕
           </button>
         </div>
 
-        <dl className="divide-y divide-line">
+        <dl className="details-list">
           {rows.map((row) => (
-            <div key={row.label} className="flex items-center justify-between gap-4 px-5 py-3.5">
-              <dt className="text-sm text-muted">{row.label}</dt>
-              <dd className="text-sm font-bold text-ink">{row.value}</dd>
+            <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd>
             </div>
           ))}
         </dl>
 
-        <div className="mt-auto space-y-3 border-t border-line p-5">
+        <PlayerPaymentHistory key={player.player_id} playerID={player.player_id} />
+
+        <div className="drawer-actions">
           {error && (
-            <p className="rounded-xl border border-crimson/40 bg-crimson/10 px-4 py-3 text-sm text-crimson">
+            <p className="error-message">
               {error}
             </p>
           )}
 
           {confirming ? (
             <>
-              <p className="text-xs text-body">
+              <p className="muted">
                 سيتم حذف اللاعب وصورته نهائياً. هل أنت متأكد؟
               </p>
-              <div className="flex gap-2">
+              <div className="button-group">
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="flex-1 rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-crimson/25 transition hover:bg-crimson/90 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="button button-danger"
                 >
                   {deleting ? "جاري الحذف..." : "نعم، احذف"}
                 </button>
                 <button
                   onClick={() => setConfirming(false)}
                   disabled={deleting}
-                  className="flex-1 rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
+                  className="button button-secondary"
                 >
                   تراجع
                 </button>
               </div>
             </>
           ) : (
-            <div className="flex gap-2">
+            <div className="button-group">
               <button
                 onClick={() => setConfirming(true)}
-                className="flex-1 rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-crimson/25 transition hover:bg-crimson/90"
+                className="button button-danger"
               >
                 حذف اللاعب
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
+                className="button button-secondary"
               >
                 إغلاق
               </button>

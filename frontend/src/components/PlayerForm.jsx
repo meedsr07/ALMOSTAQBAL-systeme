@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { createPlayer } from "@/lib/api";
 
-const fieldClass =
-  "w-full rounded-xl border border-field bg-panel px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-crimson";
-
-const labelClass = "mb-1.5 block text-sm font-semibold text-body";
+const fieldClass = "field";
+const labelClass = "field-label";
 
 const positions = ["Forward", "Midfielder", "Defender", "Goalkeeper", "Winger"];
 const categories = ["U13", "U15", "U17", "U19", "Senior"];
@@ -60,8 +58,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid gap-5 sm:grid-cols-2">
+    <form onSubmit={handleSubmit}><div className="form-grid">
         <div>
           <label htmlFor="first_name" className={labelClass}>
             الاسم الأول *
@@ -175,7 +172,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
           />
         </div>
 
-        <div className="sm:col-span-2">
+        <div className="form-span">
           <label htmlFor="previous_team" className={labelClass}>
             الفريق السابق
           </label>
@@ -186,7 +183,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
           />
         </div>
 
-        <div className="sm:col-span-2">
+        <div className="form-span">
           <label htmlFor="profile_image" className={labelClass}>
             صورة اللاعب *
           </label>
@@ -196,7 +193,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
             type="file"
             accept="image/jpeg,image/png,image/webp"
             onChange={handleImageChange}
-            className="w-full cursor-pointer rounded-xl border border-field bg-panel px-4 py-2.5 text-sm text-body file:ml-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-crimson file:px-4 file:py-2 file:text-xs file:font-bold file:text-white"
+            className="field file-field"
           />
 
           {imagePreview && (
@@ -204,29 +201,29 @@ export default function PlayerForm({ onSuccess, onCancel }) {
             <img
               src={imagePreview}
               alt="معاينة الصورة"
-              className="mt-4 h-32 w-32 rounded-2xl object-cover ring-1 ring-line"
+              className="image-preview"
             />
           )}
         </div>
       </div>
 
       {error && (
-        <p className="rounded-xl border border-crimson/30 bg-crimson/5 px-4 py-3 text-sm font-medium text-crimson">
+        <p className="error-message">
           {error}
         </p>
       )}
 
       {saved && (
-        <p className="rounded-xl border border-line bg-surface px-4 py-3 text-sm font-semibold text-crimson">
+        <p className="notice">
           تم حفظ اللاعب بنجاح
         </p>
       )}
 
-      <div className="flex items-center gap-3 border-t border-line pt-5">
+      <div className="form-actions">
         <button
           type="submit"
           disabled={sending || saved}
-          className="rounded-xl bg-crimson px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-crimson/90 disabled:cursor-not-allowed disabled:opacity-60"
+          className="button button-primary"
         >
           {sending ? "جاري الحفظ..." : "حفظ اللاعب"}
         </button>
@@ -234,7 +231,7 @@ export default function PlayerForm({ onSuccess, onCancel }) {
         <button
           type="button"
           onClick={() => onCancel?.()}
-          className="rounded-xl bg-white/10 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
+          className="button button-secondary"
         >
           إلغاء
         </button>

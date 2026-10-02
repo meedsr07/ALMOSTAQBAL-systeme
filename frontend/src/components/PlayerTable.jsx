@@ -3,49 +3,34 @@ import { formatDate, formatValue } from "@/lib/format";
 
 export default function PlayerTable({ players, onSelect }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
-      <table className="w-full min-w-[900px] text-right text-sm">
-        <thead className="border-b border-line bg-panel text-xs text-body">
+    <div className="table-panel"><table className="data-table"><thead>
           <tr>
-            <th className="px-4 py-3 font-semibold">اللاعب</th>
-            <th className="px-4 py-3 font-semibold">المركز</th>
-            <th className="px-4 py-3 font-semibold">الفئة</th>
-            <th className="px-4 py-3 font-semibold">الطول</th>
-            <th className="px-4 py-3 font-semibold">الوزن</th>
-            <th className="px-4 py-3 font-semibold">القدم المفضلة</th>
-            <th className="px-4 py-3 font-semibold">الفريق السابق</th>
-            <th className="px-4 py-3 font-semibold">تاريخ الميلاد</th>
+            <th>اللاعب</th><th>المركز</th><th>الفئة</th><th>الطول</th><th>الوزن</th><th>القدم المفضلة</th><th>الفريق السابق</th><th>تاريخ الميلاد</th>
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-line">
+        <tbody>
           {players.map((player) => (
             <tr
               key={player.player_id}
               onClick={() => onSelect?.(player)}
-              className="cursor-pointer transition hover:bg-white/[0.03]"
+              className="clickable-row"
             >
-              <td className="px-4 py-3">
-                <div className="flex items-center gap-3">
-                  <PlayerAvatar player={player} className="h-10 w-10 text-sm" />
-                  <span className="font-bold text-ink">
+              <td><div className="row-player"><PlayerAvatar player={player} className="avatar-sm" /><span className="player-name">
                     {player.first_name} {player.last_name}
                   </span>
                 </div>
               </td>
-              <td className="px-4 py-3 font-semibold text-crimson">
+              <td>
                 {formatValue(player.position)}
               </td>
-              <td className="px-4 py-3 text-body">{formatValue(player.category)}</td>
-              <td className="px-4 py-3 text-body">
+              <td>{formatValue(player.category)}</td><td>
                 {player.height_cm ? `${player.height_cm} سم` : "—"}
               </td>
-              <td className="px-4 py-3 text-body">
+              <td>
                 {player.weight_kg ? `${player.weight_kg} كجم` : "—"}
               </td>
-              <td className="px-4 py-3 text-body">{formatValue(player.preferred_foot)}</td>
-              <td className="px-4 py-3 text-body">{formatValue(player.previous_team)}</td>
-              <td className="px-4 py-3 text-muted">{formatDate(player.date_of_birth)}</td>
+              <td>{formatValue(player.preferred_foot)}</td><td>{formatValue(player.previous_team)}</td><td>{formatDate(player.date_of_birth)}</td>
             </tr>
           ))}
         </tbody>

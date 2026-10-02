@@ -8,8 +8,7 @@ import PlayerTable from "@/components/PlayerTable";
 import PlayerFormModal from "@/components/PlayerFormModal";
 import PlayerDetailsPanel from "@/components/PlayerDetailsPanel";
 
-const fieldClass =
-  "w-full rounded-xl border border-field bg-panel px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted focus:border-crimson";
+const fieldClass = "field";
 
 export default function PlayersPage() {
   const [players, setPlayers] = useState([]);
@@ -62,38 +61,28 @@ export default function PlayersPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-body">
-          عرض <span className="font-bold text-ink">{filteredPlayers.length}</span> من{" "}
+    <div className="dashboard-page"><div className="page-header"><p className="muted">
+          عرض <strong>{filteredPlayers.length}</strong> من{" "}
           {players.length} لاعب
         </p>
 
-        <div className="flex items-center gap-2">
+        <div className="button-group">
           <button
             onClick={() => setView("cards")}
-            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
-              view === "cards"
-                ? "bg-crimson/10 text-crimson ring-1 ring-crimson/30"
-                : "text-body hover:text-ink"
-            }`}
+            className={`button button-toggle ${view === "cards" ? "active" : ""}`}
           >
             بطاقات
           </button>
           <button
             onClick={() => setView("table")}
-            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
-              view === "table"
-                ? "bg-crimson/10 text-crimson ring-1 ring-crimson/30"
-                : "text-body hover:text-ink"
-            }`}
+            className={`button button-toggle ${view === "table" ? "active" : ""}`}
           >
             جدول
           </button>
 
           <button
             onClick={() => setModalOpen(true)}
-            className="rounded-xl bg-crimson px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-crimson/90"
+            className="button button-primary"
           >
             + إضافة لاعب
           </button>
@@ -101,7 +90,7 @@ export default function PlayersPage() {
       </div>
 
       {/* filters */}
-      <section className="grid gap-3 rounded-2xl border border-line bg-surface p-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="panel filters">
         <input
           type="search"
           value={search}
@@ -152,7 +141,7 @@ export default function PlayersPage() {
         {hasFilters && (
           <button
             onClick={clearFilters}
-            className="rounded-xl border border-line px-4 py-2.5 text-sm font-semibold text-body transition hover:border-crimson/50 hover:text-crimson sm:col-span-2 lg:col-span-4"
+            className="button button-secondary"
           >
             مسح الفلاتر
           </button>
@@ -160,29 +149,28 @@ export default function PlayersPage() {
       </section>
 
       {error && (
-        <p className="rounded-xl border border-crimson/30 bg-crimson/5 px-4 py-3 text-sm font-medium text-crimson">
+        <p className="error-message">
           {error}
         </p>
       )}
 
       {loading ? (
-        <p className="py-16 text-center text-sm text-muted">جاري تحميل اللاعبين...</p>
+        <p className="loading-state">جاري تحميل اللاعبين...</p>
       ) : players.length === 0 ? (
-        <div className="rounded-2xl border border-line bg-surface py-16 text-center">
-          <p className="text-sm text-body">لا يوجد لاعبون بعد.</p>
+        <div className="panel empty-state"><p>لا يوجد لاعبون بعد.</p>
           <button
             onClick={() => setModalOpen(true)}
-            className="mt-4 inline-block rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white"
+            className="button button-primary"
           >
             + إضافة أول لاعب
           </button>
         </div>
       ) : filteredPlayers.length === 0 ? (
-        <p className="rounded-2xl border border-line bg-surface py-16 text-center text-sm text-muted">
+        <p className="panel empty-state">
           لا يوجد لاعبون مطابقون للفلاتر.
         </p>
       ) : view === "cards" ? (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="player-grid">
           {filteredPlayers.map((player) => (
             <PlayerCard
               key={player.player_id}

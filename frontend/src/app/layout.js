@@ -21,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ar" dir="rtl" className={cairo.variable}>
-      <body className="min-h-screen font-sans text-ink antialiased">
+      <body>
         <AppShell>{children}</AppShell>
       </body>
     </html>

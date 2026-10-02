@@ -47,6 +47,74 @@ export async function deletePlayer(playerID) {
   return data;
 }
 
+async function subscriptionRequest(path, options = {}, fallbackMessage) {
+  const response = await fetch(`/api${path}`, {
+    ...options,
+    headers: { "Content-Type": "application/json", ...options.headers },
+    cache: "no-store",
+  });
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.error || fallbackMessage);
+  }
+
+  return data;
+}
+
+export function getSubscriptions(filters = {}) {
+  const query = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== "" && value !== undefined && value !== null) query.set(key, value);
+  });
+  const suffix = query.toString() ? `?${query}` : "";
+  return subscriptionRequest(`/subscriptions${suffix}`, {}, "تعذر تحميل الاشتراكات");
+}
+
+export function getSubscription(subscriptionID) {
+  return subscriptionRequest(`/subscriptions/${subscriptionID}`, {}, "تعذر تحميل الاشتراك");
+}
+
+export function createSubscription(data) {
+  return subscriptionRequest(
+    "/subscriptions",
+    { method: "POST", body: JSON.stringify(data) },
+    "تعذر إنشاء الاشتراك",
+  );
+}
+
+export function updateSubscription(subscriptionID, data) {
+  return subscriptionRequest(
+    `/subscriptions/${subscriptionID}`,
+    { method: "PUT", body: JSON.stringify(data) },
+    "تعذر تحديث الاشتراك",
+  );
+}
+
+export function deleteSubscription(subscriptionID) {
+  return subscriptionRequest(
+    `/subscriptions/${subscriptionID}`,
+    { method: "DELETE" },
+    "تعذر حذف الاشتراك",
+  );
+}
+
+export function getSubscriptionStats(month, year) {
+  return subscriptionRequest(
+    `/subscriptions/stats?month=${month}&year=${year}`,
+    {},
+    "تعذر تحميل الإحصائيات",
+  );
+}
+
+export function getPlayerSubscriptions(playerID) {
+  return subscriptionRequest(
+    `/players/${playerID}/subscriptions`,
+    {},
+    "تعذر تحميل سجل الدفعات",
+  );
+}
+
 // Turns the stored path (/uploads/players/xxx.jpg) into a full image url
 export function playerImageUrl(profileImage) {
   if (!profileImage) return "";
