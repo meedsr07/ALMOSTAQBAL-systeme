@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS player (
 
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    date_of_birth DATE NOT NULL,
+    date_of_birth DATETIME NOT NULL,
 
     position TEXT,
     category TEXT,
@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS player (
 
     preferred_foot TEXT,
 
-    previous_team TEXT
+    previous_team TEXT,
 );
