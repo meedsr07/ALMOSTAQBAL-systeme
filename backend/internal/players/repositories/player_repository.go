@@ -44,3 +44,57 @@ func CreatePlayer(player models.Player) (int64, error) {
 
 	return playerID, nil
 }
+
+// GetPlayers returns every player stored in the player table.
+func GetPlayers() ([]models.Player, error) {
+	rows, err := database.Database.Query(
+		`SELECT
+			player_id,
+			first_name,
+			last_name,
+			date_of_birth,
+			position,
+			category,
+			height_cm,
+			weight_kg,
+			preferred_foot,
+			previous_team,
+			profile_image
+		FROM player
+		ORDER BY player_id`,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't read players: %v", err)
+	}
+	defer rows.Close()
+
+	players := []models.Player{}
+
+	for rows.Next() {
+		var player models.Player
+
+		if err := rows.Scan(
+			&player.PlayerID,
+			&player.FirstName,
+			&player.LastName,
+			&player.DateOfBirth,
+			&player.Position,
+			&player.Category,
+			&player.HeightCM,
+			&player.WeightKG,
+			&player.PreferredFoot,
+			&player.PreviousTeam,
+			&player.ProfileImage,
+		); err != nil {
+			return nil, fmt.Errorf("can't read player row: %v", err)
+		}
+
+		players = append(players, player)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("can't read players: %v", err)
+	}
+
+	return players, nil
+}
