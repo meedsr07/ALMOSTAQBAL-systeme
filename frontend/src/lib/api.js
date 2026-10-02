@@ -34,6 +34,19 @@ export async function createPlayer(formData) {
   return data;
 }
 
+// DELETE /api/players/{playerID} -> deletes one player and its image
+export async function deletePlayer(playerID) {
+  const response = await fetch(`/api/players/${playerID}`, { method: "DELETE" });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.error || "تعذر حذف اللاعب");
+  }
+
+  return data;
+}
+
 // Turns the stored path (/uploads/players/xxx.jpg) into a full image url
 export function playerImageUrl(profileImage) {
   if (!profileImage) return "";

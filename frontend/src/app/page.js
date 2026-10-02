@@ -108,6 +108,9 @@ export default function DashboardPage() {
         <PlayerDetailsPanel
           player={selectedPlayer}
           onClose={() => setSelectedPlayer(null)}
+          onDeleted={(player) =>
+            setPlayers((old) => old.filter((item) => item.player_id !== player.player_id))
+          }
         />
       )}
 

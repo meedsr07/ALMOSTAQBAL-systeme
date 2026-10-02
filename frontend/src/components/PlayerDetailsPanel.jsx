@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PlayerAvatar from "./PlayerAvatar";
+import { deletePlayer } from "@/lib/api";
 import { formatDate, formatValue } from "@/lib/format";
 
 // Sliding side panel with all the data of one player.
 // Slides in from the left, which is the mirrored side in a RTL layout.
-export default function PlayerDetailsPanel({ player, onClose }) {
+export default function PlayerDetailsPanel({ player, onClose, onDeleted }) {
+  const [confirming, setConfirming] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     function handleKey(event) {
       if (event.key === "Escape") onClose();
@@ -15,6 +20,20 @@ export default function PlayerDetailsPanel({ player, onClose }) {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
+
+  async function handleDelete() {
+    setDeleting(true);
+    setError("");
+
+    try {
+      await deletePlayer(player.player_id);
+      onDeleted?.(player);
+      onClose();
+    } catch (err) {
+      setError(err.message);
+      setDeleting(false);
+    }
+  }
 
   if (!player) return null;
 
@@ -88,13 +107,51 @@ export default function PlayerDetailsPanel({ player, onClose }) {
           ))}
         </dl>
 
-        <div className="mt-auto border-t border-line p-5">
-          <button
-            onClick={onClose}
-            className="w-full rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
-          >
-            إغلاق
-          </button>
+        <div className="mt-auto space-y-3 border-t border-line p-5">
+          {error && (
+            <p className="rounded-xl border border-crimson/40 bg-crimson/10 px-4 py-3 text-sm text-crimson">
+              {error}
+            </p>
+          )}
+
+          {confirming ? (
+            <>
+              <p className="text-xs text-body">
+                سيتم حذف اللاعب وصورته نهائياً. هل أنت متأكد؟
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex-1 rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-crimson/25 transition hover:bg-crimson/90 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {deleting ? "جاري الحذف..." : "نعم، احذف"}
+                </button>
+                <button
+                  onClick={() => setConfirming(false)}
+                  disabled={deleting}
+                  className="flex-1 rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
+                >
+                  تراجع
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="flex gap-2">
+              <button
+                onClick={() => setConfirming(true)}
+                className="flex-1 rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-crimson/25 transition hover:bg-crimson/90"
+              >
+                حذف اللاعب
+              </button>
+              <button
+                onClick={onClose}
+                className="flex-1 rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/15"
+              >
+                إغلاق
+              </button>
+            </div>
+          )}
         </div>
       </aside>
     </div>
