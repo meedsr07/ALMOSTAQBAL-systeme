@@ -19,7 +19,7 @@ func Init() error {
 	_, thisFile, _, _ := runtime.Caller(0)
 	baseDirName := filepath.Dir(thisFile)
 	// Datebase file
-	dbFile := "./MOSTAQBAL"
+	dbFile := "./MOSTAQBAL.db"
 
 	var err error
 	Database, err = sql.Open("sqlite3", dbFile+"?_foreign_keys=on")

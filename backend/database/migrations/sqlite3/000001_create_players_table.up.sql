@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS player (
 
     preferred_foot TEXT,
 
-    previous_team TEXT,
+    previous_team TEXT
 );
